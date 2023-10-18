@@ -16,6 +16,88 @@
 	<meta name="msapplication-config" content="images/browserconfig.xml">
     <meta name="mobile-web-app-capable" content="yes">
 	<meta name="theme-color" content="#d89000">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	
+	<script type="text/javascript">
+		    let initialized = false;
+
+    var buttonClicked = function() {
+        $('#gmPopupContainer').show();
+
+	$( "#dialog" ).dialog({
+	  dialogClass: "no-close",
+	  buttons: [
+	    {
+	      text: "OK",
+	      click: function() {
+	        $( this ).dialog( "close" );
+	      }
+	    }
+	  ]
+	});
+    }
+
+    window.addEventListener("click", (event) => {
+      const menuBar = document.querySelector(".geMenubar")
+      if (menuBar) {
+          if (! initialized){
+              initialized = true;
+
+              let a = document.createElement("a")
+
+              a.innerText = "GenAI"
+              a.className = "geItem"
+              a.addEventListener("click", buttonClicked, false)
+
+              // append the button at the end of the menu
+              menuBar.append(a)
+          }
+      } else {
+          alert("no menubar found")
+      }
+    });
+
+		window.addEventListener("load", function(){
+
+    // Define the dialog box
+    $("body").append ( '                                                      \
+    <div id="gmPopupContainer" title = "GenAI" style="display:none;">         \
+    <form> <!-- For true form use method="POST" action="YOUR_DESIRED_URL" --> \
+        <input type="text" id="myNumber1" value="">                           \
+        <input type="text" id="myNumber2" value="">                           \
+                                                                              \
+        <p id="myNumberSum">&nbsp;</p>                                        \
+        <button id="gmAddNumsBtn" type="button">Add the two numbers</button>  \
+        <button id="gmCloseDlgBtn" type="button">Close popup</button>         \
+    </form>                                                                   \
+    </div>                                                                    \
+' );
+
+  // Add the dialog box
+  $('#gmPopupContainer').dialog({
+    modal: true,
+    overlay: {
+        opacity: 0.7,
+        background: "black"
+    },
+    buttons: {
+        "ADD": function() {
+            $(this).dialog('close');
+            alert("added to the list");
+        },
+        "CANCEL": function() {
+            $(this).dialog('close');
+            alert("Select name from the list");
+        }
+    }
+});
+
+
+}, false)
+//--- Use jQuery to add the form in a "popup" dialog.
+		
+	</script>
 	<script type="text/javascript">
 		/**
 		 * URL Parameters and protocol description are here:
