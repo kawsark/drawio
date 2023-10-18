@@ -20,84 +20,85 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	
 	<script type="text/javascript">
-		    let initialized = false;
+		let initialized = false;
 
-    var buttonClicked = function() {
-        $('#gmPopupContainer').show();
+		window.addEventListener("click", (event) => {
+		const menuBar = document.querySelector(".geMenubar")
+		if (menuBar) {
+			if (! initialized){
+				initialized = true;
 
-	$( "#dialog" ).dialog({
-	  dialogClass: "no-close",
-	  buttons: [
-	    {
-	      text: "OK",
-	      click: function() {
-	        $( this ).dialog( "close" );
-	      }
-	    }
-	  ]
-	});
-    }
+				// Create a menubar item
+				let a = document.createElement("a")
+				a.innerText = "GenAI"
+				a.className = "geItem"
+				menuBar.append(a)
 
-    window.addEventListener("click", (event) => {
-      const menuBar = document.querySelector(".geMenubar")
-      if (menuBar) {
-          if (! initialized){
-              initialized = true;
+				// Get the board modal element and add event listener
+				const modal = document.querySelector("#boardai");
+				a.addEventListener("click", () => {
+					modal.showModal();
+				});
 
-              let a = document.createElement("a")
-
-              a.innerText = "GenAI"
-              a.className = "geItem"
-              a.addEventListener("click", buttonClicked, false)
-
-              // append the button at the end of the menu
-              menuBar.append(a)
-          }
-      } else {
-          alert("no menubar found")
-      }
-    });
-
-		window.addEventListener("load", function(){
-
-    // Define the dialog box
-    $("body").append ( '                                                      \
-    <div id="gmPopupContainer" title = "GenAI" style="display:none;">         \
-    <form> <!-- For true form use method="POST" action="YOUR_DESIRED_URL" --> \
-        <input type="text" id="myNumber1" value="">                           \
-        <input type="text" id="myNumber2" value="">                           \
-                                                                              \
-        <p id="myNumberSum">&nbsp;</p>                                        \
-        <button id="gmAddNumsBtn" type="button">Add the two numbers</button>  \
-        <button id="gmCloseDlgBtn" type="button">Close popup</button>         \
-    </form>                                                                   \
-    </div>                                                                    \
-' );
-
-  // Add the dialog box
-  $('#gmPopupContainer').dialog({
-    modal: true,
-    overlay: {
-        opacity: 0.7,
-        background: "black"
-    },
-    buttons: {
-        "ADD": function() {
-            $(this).dialog('close');
-            alert("added to the list");
-        },
-        "CANCEL": function() {
-            $(this).dialog('close');
-            alert("Select name from the list");
-        }
-    }
-});
-
-
-}, false)
-//--- Use jQuery to add the form in a "popup" dialog.
+				// Get the bloseModal button and add event listener
+				const closeModal = document.querySelector(".close-button");
+					closeModal.addEventListener("click", () => {
+					modal.close();
+				});
+			}
+		} else {
+			console.log("no menubar found")
+		}
+		});
 		
 	</script>
+	<style type="text/css">
+		.modal {
+    // padding: 1em;
+    max-width: 50ch;
+    // border: 0;
+    // box-shadow: 0 0 1em rgb(0 0 0 / .3);
+  
+    & > * {
+      margin: 0 0 0.5rem 0;
+    }
+  }
+  
+  .modal::backdrop {
+    background: rgb(0 0 0 / 0.4);
+  }
+  
+  /* extra styling */
+  
+  body {
+    min-height: 100vh;
+    margin: 2rem;
+    font-family: system-ui;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--gray-8);
+    // background-image: url('https://images.unsplash.com/photo-1644242629712-943ae5c8c4f3?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0Njc1MjQxNA&ixlib=rb-1.2.1&q=85');
+    // background-size: cover;
+  }
+  
+  h1 em {
+    color: var(--cyan-9);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  
+  .button:hover,
+  .button:focus {
+    background: var(--cyan-9);
+  }
+  
+  form {
+    display: grid;
+    gap: 1em;
+  }
+	</style>
+
+
 	<script type="text/javascript">
 		/**
 		 * URL Parameters and protocol description are here:
@@ -547,5 +548,32 @@ else
 	App.main();
 }
 </script>
+
+<dialog class="modal" id="boardai">
+	<h2>Board AI</h2>
+	<p>Use Generative AI to speed up follow-up tasks such as writing a product brief</p>
+	<button class="button close-button">close modal</button>
+	<form class="form" method="POST">
+	  <label for="modelID">Please choose a Text Model</label> 
+	  <select name="Select Model" id="modelID"> 
+		  <option value="rigatoni">Rigatoni</option> 
+		  <option value="dave">Dave</option> 
+		  <option value="pumpernickel">Pumpernickel</option> 
+		  <option value="reeses">Reeses</option> 
+	  </select>
+	
+	  <label for="intention">Choose an Activity</label> 
+	  <select name="Select activity" id="intention"> 
+		  <option value="rigatoni">Rigatoni</option> 
+		  <option value="dave">Dave</option> 
+		  <option value="pumpernickel">Pumpernickel</option> 
+		  <option value="reeses">Reeses</option> 
+	  </select>
+  
+	  <button class="button" type="submit">submit form</button>
+	</form>
+  
+  </dialog>
+
 </body>
 </html>
